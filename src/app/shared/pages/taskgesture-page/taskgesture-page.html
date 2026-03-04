@@ -1,0 +1,24 @@
+<div class="flex-1 flex flex-col gap-4 ml-6 mt-6">
+  <app-priorities-menu></app-priorities-menu>
+
+  @if (listTasksActive().length > 0) {
+    <p class="text-sm md:text-sm text-white/50">ACTIVE TASKS</p>
+  }
+
+  @for (task of listTasksActive(); track task.idTask) {
+    <task-active
+      [taskSelect]="task"
+      [value]="task.idTask.toString()"
+      [due]="task.due"
+      [title]="task.title"
+      [priority]="task.taskPriority"
+    ></task-active>
+  }
+  @if (listTasksCompleted().length > 0) {
+    <p class="text-sm md:text-sm text-white/50">COMPLETED TASKS</p>
+  }
+
+  @for (task of listTasksCompleted(); track task.idTask) {
+    <task-completed [taskSelect]="task" [due]="task.due" [title]="task.title" />
+  }
+</div>

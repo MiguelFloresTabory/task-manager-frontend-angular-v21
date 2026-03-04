@@ -1,0 +1,119 @@
+<!-- Modal nativo -->
+<dialog
+  #taskDialog
+  class="rounded-2xl p-0 w-full max-w-lg m-auto bg-slate-900 border border-slate-800 text-slate-100 shadow-2xl shadow-black/40 backdrop:bg-black/50 backdrop:backdrop-blur-sm transition-all duration-300 ease-[cubic-bezier(.16,1,.3,1)] opacity-0 scale-[0.96] translate-y-4 open:opacity-100 open:scale-100 open:translate-y-0"
+>
+  <form (submit)="onSubmit($event)" class="p-4 space-y-4" novalidate>
+    <!-- Header -->
+    <header class="flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-white">Create Task</h2>
+
+      <button (click)="closeModal()" class="text-slate-400 hover:text-white transition text-xl">
+        ✕
+      </button>
+    </header>
+
+    <!-- Task Title -->
+    <div>
+      <label class="text-sm text-slate-400 block mb-2"> Task Title </label>
+      <input
+        id="title"
+        type="text"
+        [formField]="taskForm.title"
+        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
+      />
+      @if (isFieldInvalid('title')) {
+        <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+          <error-icon />
+          @for (error of taskForm.title().errors(); track $index) {
+            <span>{{ error.message }}</span>
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Due Date -->
+    <div>
+      <label class="text-sm text-slate-400 block mb-2"> Due Date </label>
+      <input
+        id="due"
+        type="datetime-local"
+        [formField]="taskForm.due"
+        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+      />
+      @if (isFieldInvalid('due')) {
+        <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+          <error-icon />
+          @for (error of taskForm.due().errors(); track $index) {
+            <span>{{ error.message }}</span>
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Priority -->
+    <div>
+      <label class="text-sm text-slate-400 block mb-2"> Priority </label>
+      <select
+        id="priority"
+        
+        [formField]="taskForm.priority"
+        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+      >
+     
+        @for (priority of arrayPriorities; track $index) {
+          <option [value]="priority.value">{{ priority.name }}</option>
+        }
+         
+      </select>
+        @if ( isFieldInvalid('priority') ) {
+            <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+              <error-icon />
+              @for (error of taskForm.priority().errors(); track $index) {
+              <span>{{ error.message }}</span>
+              }
+            </p>
+            }
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label class="text-sm text-slate-400 block mb-2"> Description </label>
+      <textarea
+        id="description"
+        type="text"
+        [formField]="taskForm.description"
+        rows="4"
+        placeholder="Write task description..."
+        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+      ></textarea>
+       @if ( isFieldInvalid('description') ) {
+            <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+              <error-icon />
+              @for (error of taskForm.description().errors(); track $index) {
+              <span>{{ error.message }}</span>
+              }
+            </p>
+            }
+    </div>
+
+    <!-- Actions -->
+    <footer class="flex flex-col sm:flex-row gap-3 pt-2">
+      <button
+        (click)="closeModal()"
+        value="cancel"
+        class="w-full sm:w-auto px-5 py-2 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 transition"
+      >
+        Cancel
+      </button>
+
+      <button
+        value="submit"
+         type="submit"
+        class="w-full sm:w-auto px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 transition text-white font-semibold"
+      >
+        Create Task
+      </button>
+    </footer>
+  </form>
+</dialog>

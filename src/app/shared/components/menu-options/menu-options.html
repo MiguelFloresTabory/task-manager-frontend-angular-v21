@@ -1,0 +1,28 @@
+<nav class="p-4 space-y-2">
+  <!-- <button
+    class="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition"
+  >
+    <span class="flex items-center gap-3"><mat-icon>dashboard</mat-icon> Inbox</span>
+
+    <span class="text-xs bg-slate-700 px-2 py-1 rounded-lg">12</span>
+  </button> -->
+
+  @for (menuelement of menuOptions(); track menuelement.router) {
+    <!-- <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-600">
+      <mat-icon>calendar_today</mat-icon> Today
+    </button> -->
+    <a class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800"
+     [routerLink]="menuelement.router"
+     routerLinkActive="gb-blue-800"
+    >
+      <div class="flex flex-row gap-5 items-center">
+        <mat-icon>{{ menuelement.icon }}</mat-icon>
+        <div class="flex flex-col gap-3">
+          <span class="text-lg leading-5 text-white"> {{ menuelement.label }}</span>
+
+          <span class="text-xsleading-5 text-white/50 hidden md:block"> {{ menuelement.sublabel }}</span>
+        </div>
+      </div>
+    </a>
+  }
+</nav>

@@ -1,0 +1,141 @@
+<!-- OVERLAY -->
+@if (isPanelOpen()) {
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40" (click)="togglePanel()"></div>
+}
+
+<!-- RIGHT PANEL -->
+<div
+  class="fixed top-0 right-0 h-full w-full max-w-[420px] bg-slate-900 border-l border-slate-800 shadow-2xl z-50 transform transition-transform duration-300 ease-out flex flex-col"
+  [class.translate-x-full]="!isPanelOpen()"
+>
+ 
+  <!-- HEADER -->
+  <div class="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="h-8 w-8 rounded-lg bg-blue-600/20 flex items-center justify-center">✏️</div>
+      <h2 class="text-lg font-semibold text-slate-100">Edit Task</h2>
+    </div>
+
+    <button class="text-slate-400 hover:text-white transition" (click)="closePanel()">✕</button>
+  </div>
+
+  <!-- BODY -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div class="flex-1 overflow-y-auto px-6 py-6 space-y-5">
+      <!-- TASK TITLE -->
+      <div>
+        <label for="title" class="text-sm text-slate-400 block mb-2"> Task Title </label>
+
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          class="w-full bg-slate-800 border border-slate-700 rounded-xl px-5 py-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          placeholder="Update Q3 Marketing Strategy"
+        />
+        @if (form.get('title')!.hasError('required')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            <span>title required</span>
+          </p>
+        }
+        @if (form.get('title')!.hasError('minlength')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            <span>min 4 lenght</span>
+          </p>
+        }
+      </div>
+
+      <!-- GRID -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- DATE -->
+        <div>
+          <label for="due" class="text-sm text-slate-400 block mb-2"> Due Date </label>
+
+          <input
+            id="due"
+            type="datetime-local"
+            step="60"
+            formControlName="due"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          @if (form.get('due')!.hasError('invalidDue')) {
+            <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+              <error-icon />
+              <span>due 30 min in advance</span>
+            </p>
+          }
+          @if (form.get('due')!.hasError('required')) {
+            <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+              <error-icon />
+              <span>due date required</span>
+            </p>
+          }
+        </div>
+
+        <!-- PRIORITY -->
+        <div>
+          <label class="text-sm text-slate-400 block mb-2"> Priority </label>
+
+          <select
+            formControlName="priority"
+            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          >
+            <option value="--select--">--select--</option>
+            @for (priority of prioritiesArray; track priority.name) {
+              <option value="{{ priority.value }}">{{ priority.name }}</option>
+            }
+          </select>
+          @if (form.get('priority')!.hasError('invalidPriority')) {
+            <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+              <error-icon />
+              <span>invalid priority</span>
+            </p>
+          }
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div>
+        <label for="description" class="text-sm text-slate-400 block mb-2"> Description </label>
+
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="6"
+          class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          placeholder="Task description..."
+        ></textarea>
+        @if (form.get('description')!.hasError('required')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            <span>description required</span>
+          </p>
+        }
+        @if (form.get('description')!.hasError('maxlength')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            <span>max length 600</span>
+          </p>
+        }
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="p-6 border-t border-slate-800 space-y-3">
+      <button
+        type="submit"
+        [disabled]="!form.valid"
+        class="w-full bg-blue-600 hover:bg-blue-500 transition rounded-xl py-3 font-semibold text-white"
+      >
+        ✓ Save Changes
+      </button>
+
+      <!-- <button   
+      class="w-full text-slate-400 hover:text-red-400 transition text-sm">
+        Delete Task
+      </button> -->
+    </div>
+  </form>
+</div>

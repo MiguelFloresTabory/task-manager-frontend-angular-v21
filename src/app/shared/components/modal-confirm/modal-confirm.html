@@ -1,0 +1,72 @@
+<dialog
+  #modalConfirm
+  class="fixed top-1/2 left-1/2 
+         -translate-x-1/2 -translate-y-1/2
+         w-[90%] sm:w-full max-w-md
+         p-0 rounded-3xl bg-slate-900 
+         border border-slate-800 text-slate-100 
+         shadow-2xl shadow-black/50 
+         backdrop:bg-black/60 backdrop:backdrop-blur-sm
+         transition-all duration-300 ease-out 
+         opacity-0 scale-95
+         open:opacity-100 open:scale-100"
+  (cancel)="modalService.close()"
+>
+  <div class="p-6 sm:p-8">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg sm:text-xl font-semibold text-white">
+        Confirm Action
+      </h2>
+
+      <button
+        (click)="modalService.close()"
+        class="text-slate-400 hover:text-white transition text-xl leading-none"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="text-center mb-8">
+
+      <!-- Icon -->
+      <div class="flex justify-center mb-4">
+        <div class="w-14 h-14 flex items-center justify-center rounded-full bg-red-500/10 border border-red-500/20">
+          <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <p class="text-slate-400 text-sm sm:text-base">
+        {{ modalService.message() }}
+      </p>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 justify-end">
+
+      <button
+        (click)="modalService.close()"
+        class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 transition"
+      >
+        Cancel
+      </button>
+
+      <button
+        (click)="modalService.confirmAction()"
+        class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 active:scale-95 transition-all duration-150 shadow-lg shadow-red-900/40"
+      >
+        Confirm
+      </button>
+
+    </div>
+
+  </div>
+</dialog>

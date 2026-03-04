@@ -1,0 +1,66 @@
+<fieldset
+  class="relative p-4 mr-4 rounded-xl transition-all duration-200"
+  [ngClass]="{
+    'bg-slate-800 border border-slate-700': !isDueExpire(),
+    'bg-red-900/20 border border-red-500/60': isDueExpire()
+  }"
+>
+  @if (isDueExpire()) {
+    <legend class="text-red-400 px-2 text-sm font-medium">
+      Task Expired
+    </legend>
+  }
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <div class="flex justify-between items-center">
+
+    <!-- IZQUIERDA (Radio + Info) -->
+    <div class="flex items-center gap-4">
+
+      <!-- Radio -->
+      <input
+        type="radio"
+        class="appearance-none w-5 h-5 rounded-full border-2 border-gray-400 
+               checked:bg-blue-500 checked:border-blue-500
+               hover:border-blue-400 
+               focus:ring-2 focus:ring-blue-300 
+               transition cursor-pointer"
+        [checked]="selected()"
+        (click)="onChange($event)"
+        (change)="onChange($event)"
+        [value]="value()"
+        name="priority"
+      />
+
+      <!-- Info -->
+      <div class="flex flex-col">
+        <div class="flex items-center gap-2">
+          <p class="font-medium text-slate-100">
+            {{ title() }}
+          </p>
+
+          <priority-flag [priority]="priority()"></priority-flag>
+        </div>
+
+        <p class="text-sm text-slate-400">
+          Due: {{ changeDateFormat(due()) }}
+        </p>
+      </div>
+
+    </div>
+
+    <!-- ICONO TRASH -->
+    <button
+      type="button"
+      (click)="openModal()"
+      class="flex items-center justify-center w-9 h-9  bg-red-500/20
+             rounded-lg 
+             hover:bg-red-500/50 
+             transition cursor-pointer">
+      <mat-icon class="text-slate-400 hover:text-red-500 transition">
+        delete
+      </mat-icon>
+    </button>
+
+  </div>
+</fieldset>

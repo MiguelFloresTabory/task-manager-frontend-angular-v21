@@ -1,0 +1,5 @@
+<div class="flex flex-wrap gap-4  text-white">
+    @for (item of _priorities(); track item.name) {
+  <priority-filter (newPriority) = "addNewPriorityFilter($event)"  [value]="item.value" [name]="item.name"></priority-filter>
+   }
+</div>

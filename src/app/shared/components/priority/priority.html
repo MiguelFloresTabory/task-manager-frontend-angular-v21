@@ -1,0 +1,11 @@
+<button (click)="handleClick()"  
+class="hover:bg-blue-600 transition px-4 py-3 rounded-2xl px-3 py-1 rounded"
+  [ngClass]="{
+   
+    'bg-blue-600': isclicked(),
+    
+    'bg-slate-800': !isclicked()
+  }"
+>{{name()}}</button> 
+
+

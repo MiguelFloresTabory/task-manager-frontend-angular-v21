@@ -1,0 +1,29 @@
+<div class="p-4 mr-4 bg-slate-900 rounded-xl flex flex-col">
+  <div class="flex flex-row justify-between items-center mb-2">
+    <div class="flex flex-row items-center gap-4">
+      <div class="flex flex-col justify-center">
+        <input
+          type="radio"
+          class="appearance-none w-5 h-5 rounded-full border-2 border-gray-400 checked:bg-blue-900 checked:border-blue-400 hover:border-blue-300 focus:ring-2 focus:ring-blue-200 transition cursor-pointer"
+          [checked]="true"
+          [disabled]="true"
+        />
+      </div>
+      <div class="flex flex-col ml-4 text-white/50">
+        <div class="flex flex-row">
+          <p class="font-medium line-through">{{ title() }}</p>
+        </div>
+        <p class="text-sm text-gray-400">Completed: {{ changedateFormat(due()) }}</p>
+      </div>
+    </div>
+
+    <!-- ICONO TRASH -->
+    <button
+      type="button"
+      (click)="openModal()"
+      class="flex items-center justify-center w-9 h-9 bg-red-500/20 rounded-lg hover:bg-red-500/50 transition cursor-pointer"
+    >
+      <mat-icon class="text-slate-400 hover:text-red-500 transition"> delete </mat-icon>
+    </button>
+  </div>
+</div>
