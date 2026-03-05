@@ -32,22 +32,13 @@ export class AuthService {
       );
   }
 
-  // 🔹 Refresh token
   refreshToken(): Observable<TokenResponse> {
-    const refreshToken = this.getRefreshToken();
-    if (!refreshToken) throw new Error('No hay refresh token');
-    
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${refreshToken}`
-    });
-
-    return this.http.post<TokenResponse>(`${this.baseUrl}/refresh`, null, { headers })
+       return this.http.post<TokenResponse>(`${this.baseUrl}/refresh`, null)
       .pipe(
         tap(res => this.storeTokens(res))
       );
   }
 
-  // 🔹 Logout
   logout(): Observable<any> {
     const accessToken = this.getAccessToken();
     const headers = new HttpHeaders({
@@ -60,7 +51,7 @@ export class AuthService {
   }
 
   // 🔹 Guardar tokens
-  private storeTokens(tokens: TokenResponse) {
+   private storeTokens(tokens: TokenResponse) {
     localStorage.setItem(this.accessKey, tokens.access_token);
     localStorage.setItem(this.refreshKey, tokens.refresh_token);
     console.log('Tokens almacenados:', tokens);

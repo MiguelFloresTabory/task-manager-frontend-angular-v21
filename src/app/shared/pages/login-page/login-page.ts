@@ -26,8 +26,8 @@ export class LoginComponent {
   }
 
   loginModel = signal<LoginFormData>({
-    email: '',
-    password: '',
+    email: 'prueba1@gmail.com',
+    password: '12345',
   });
 
   loginForm = form(this.loginModel, (path) => {
@@ -53,8 +53,9 @@ export class LoginComponent {
 
   onSubmit(event: Event) {
     event.preventDefault();
-       this.loadingService.show();
+     
     submit(this.loginForm, async (e) => {
+        this.loadingService.show();
       this.authService.login(this.loginModel()).subscribe({
         next: (res) => {
           console.log('Login successful:', res);

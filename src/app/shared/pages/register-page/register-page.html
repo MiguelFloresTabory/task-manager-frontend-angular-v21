@@ -1,0 +1,186 @@
+<section
+  class="min-h-screen bg-slate-900 flex items-center justify-center p-4"
+>
+  <div class="w-full max-w-md bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-8">
+    <h1 class="text-3xl font-bold text-center text-white mb-6">
+      Registro Task Gesture
+    </h1>
+
+    <form (submit)="onSubmit($event)" class="space-y-5" novalidate>
+
+      <!-- NAME -->
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">
+          Nombre completo
+        </label>
+        <input
+          type="text"
+          placeholder="Miguel Flores"
+          id="name"
+          [formField]="registerForm.name"
+          class="w-full px-4 py-2 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition"
+        />
+        @if (isFieldInvalid('name')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            @for (error of registerForm.name().errors(); track $index) {
+              <span>{{ error.message }}</span>
+            }
+          </p>
+        }
+      </div>
+
+      <!-- DNI -->
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">
+          DNI
+        </label>
+        <input
+          type="text"
+          placeholder="12345678"
+          id="dni"
+          [formField]="registerForm.dni"
+          class="w-full px-4 py-2 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition"
+        />
+        @if (isFieldInvalid('dni')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            @for (error of registerForm.dni().errors(); track $index) {
+              <span>{{ error.message }}</span>
+            }
+          </p>
+        }
+      </div>
+
+      <!-- PHONE -->
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">
+          Número telefónico
+        </label>
+        <input
+          type="text"
+          placeholder="987654321"
+          id="number"
+          [formField]="registerForm.number"
+          class="w-full px-4 py-2 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition"
+        />
+        @if (isFieldInvalid('number')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            @for (error of registerForm.number().errors(); track $index) {
+              <span>{{ error.message }}</span>
+            }
+          </p>
+        }
+      </div>
+
+      <!-- EMAIL -->
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">
+          Correo electrónico
+        </label>
+        <input
+          type="email"
+          placeholder="ejemplo@email.com"
+          id="email"
+          [formField]="registerForm.email"
+          class="w-full px-4 py-2 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition"
+        />
+        @if (isFieldInvalid('email')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            @for (error of registerForm.email().errors(); track $index) {
+              <span>{{ error.message }}</span>
+            }
+          </p>
+        }
+      </div>
+
+      <!-- PASSWORD -->
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">
+          Contraseña
+        </label>
+
+        <div class="relative">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            id="password"
+            [formField]="registerForm.password"
+            placeholder="••••••••"
+            class="w-full px-4 py-2 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition"
+          />
+
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="absolute right-3 top-2.5 text-slate-400 hover:text-white text-sm"
+          >
+            {{ showPassword() ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+
+        @if (isFieldInvalid('password')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            @for (error of registerForm.password().errors(); track $index) {
+              <span>{{ error.message }}</span>
+            }
+          </p>
+        }
+      </div>
+
+      <!-- CONFIRM PASSWORD -->
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">
+          Confirmar contraseña
+        </label>
+
+        <div class="relative">
+          <input
+            [type]="showconfirmPassword() ? 'text' : 'password'"
+            id="confirmPassword"
+            [formField]="registerForm.confirmPassword"
+            placeholder="••••••••"
+            class="w-full px-4 py-2 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-slate-500 focus:outline-none transition"
+          />
+
+          <button
+            type="button"
+            (click)="toggleConfirmPasswordVisibility()"
+            class="absolute right-3 top-2.5 text-slate-400 hover:text-white text-sm"
+          >
+            {{ showconfirmPassword() ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+
+        @if (isFieldInvalid('confirmPassword')) {
+          <p class="text-sm text-red-400 font-medium flex items-center gap-1 mt-2">
+            <error-icon />
+            @for (error of registerForm.confirmPassword().errors(); track $index) {
+              <span>{{ error.message }}</span>
+            }
+          </p>
+        }
+      </div>
+
+      <!-- BUTTON -->
+      <button
+        type="submit"
+        class="w-full bg-slate-700 text-white py-2 rounded-lg font-semibold hover:bg-slate-600 transition duration-300"
+      >
+        Registrarse
+      </button>
+
+    </form>
+
+    <div class="flex justify-center mt-3">
+      <a
+        href="/login"
+        class="text-white py-2 px-4 rounded-lg font-semibold hover:bg-slate-600 transition duration-300"
+      >
+        Login
+      </a>
+    </div>
+  </div>
+</section>

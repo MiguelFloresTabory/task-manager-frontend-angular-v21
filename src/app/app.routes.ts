@@ -26,9 +26,7 @@ export const routes: Routes = [
             },
             {
                 path: "**",
-                redirectTo: 'login'
-
-                    
+                redirectTo: 'login'  
             }
 
         ]
@@ -37,6 +35,11 @@ export const routes: Routes = [
       {
           path: 'login',
           loadComponent: () => import('./shared/pages/login-page/login-page').then(m => m.LoginComponent)
+      
+    },
+      {
+          path: 'register',
+          loadComponent: () => import('./shared/pages/register-page/register-page').then(m => m.RegisterPage)
       
     },
     

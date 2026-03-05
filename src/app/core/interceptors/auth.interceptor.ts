@@ -10,8 +10,10 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getAccessToken();
     const url = req.url;
+    const token =
+     (url ===`${environment.apiUrl}/auth/refresh`) ? this.authService.getRefreshToken() : this.authService.getAccessToken();
+    console.log('Token:', url, token);
     if (
       url === `${environment.apiUrl}/auth/register` ||
       url === `${environment.apiUrl}/auth/login`
