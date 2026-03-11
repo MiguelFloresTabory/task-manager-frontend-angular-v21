@@ -1,6 +1,6 @@
 import { LoadingService } from './../../services/loading.service';
 import { TaskResponseDTO, TaskUpdateDTO } from './../../interfaces/task.interface';
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { RightPanelService } from '../../services/right-panel.service';
 import { priorities, priorityArray } from '../../data/data';
 import {
@@ -16,6 +16,7 @@ import { localToUtc, utcToLocal } from 'src/app/util/util';
 import { ErrorIcon } from '../../icons/error-icon';
 import { TaskService } from '../../services/task.service';
 import { PriorityEnum } from '../../enums/priority.enum';
+import { ToastService, ToastType } from '../../services/toast-msg.service';
 
 @Component({
   selector: 'right-panel',
@@ -23,12 +24,18 @@ import { PriorityEnum } from '../../enums/priority.enum';
   imports: [ReactiveFormsModule, ErrorIcon],
 })
 export class RightPanel {
-  
   isPanelOpen = signal(false);
   panelData = signal<TaskResponseDTO | null>(null);
-  constructor(private rightPanel: RightPanelService, private taskservice: TaskService,private loadingService: LoadingService) {
+  constructor(
+    private rightPanel: RightPanelService,
+    private taskservice: TaskService,
+    private loadingService: LoadingService,
+  ) {
     this.panelData.set(rightPanel.task);
   }
+
+  toastService = inject(ToastService);
+  ToastType = ToastType;
 
   prioritiesArray = priorities;
   //VALIDAR FECHA, DUE,
@@ -58,7 +65,6 @@ export class RightPanel {
       if (!control.value) return null;
       if (control.value === '--select--') {
         return { invalidPriority: { value: control.value } };
-       
       }
       return null; // valid
     };
@@ -83,7 +89,7 @@ export class RightPanel {
   onSubmit() {
     // console.log('FORM ENVIADO:', this.form.value);
     // console.log(this.panelData()?.idTask);
-    
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -91,26 +97,27 @@ export class RightPanel {
     this.loadingService.show();
     //ACTUALIZACION
 
-    this.taskservice.updateTask({
-      idTask: this.panelData()?.idTask!,
-      title: this.form.value.title!,
-      due: localToUtc(this.form.value.due!),
-      taskPriority:  this.form.value.priority! as PriorityEnum,
-      description: this.form.value.description!, 
-      completed: this.panelData()?.completed!,
-      createdAt: this.panelData()?.createdAt!,
-    }).subscribe({
-      next: (res: TaskResponseDTO) => {
+    this.taskservice
+      .updateTask({
+        idTask: this.panelData()?.idTask!,
+        title: this.form.value.title!,
+        due: localToUtc(this.form.value.due!),
+        taskPriority: this.form.value.priority! as PriorityEnum,
+        description: this.form.value.description!,
+        completed: this.panelData()?.completed!,
+        createdAt: this.panelData()?.createdAt!,
+      })
+      .subscribe({
+        next: (res: TaskResponseDTO) => {
           this.taskservice.getTasks();
           this.loadingService.hide();
           this.closePanel();
-         
-       },
-       error: (err) => {
-        this.loadingService.hide();
-        console.log(err)
-      }
-    });
+        },
+        error: (err) => {
+          this.loadingService.hide();
+          console.log(err);
+        },
+      });
 
     // this.resetForm();
   }
@@ -131,19 +138,15 @@ export class RightPanel {
   // 📦 CARGAR DATOS DESPUES DE RENDER
   // =====================================
   loadDataIntoForm() {
-   
     const dataFromBackend = {
       title: this.panelData()?.title ?? '',
-      due: this.panelData()?.due
-        ? utcToLocal(this.panelData()!.due)
-        : '',
+      due: this.panelData()?.due ? utcToLocal(this.panelData()!.due) : '',
       priority: this.panelData()?.taskPriority ?? '',
       description: this.panelData()?.description ?? '',
     };
 
-
     this.form.patchValue(dataFromBackend);
-     console.log(dataFromBackend);
+    console.log(dataFromBackend);
   }
 
   ngOnInit() {
@@ -154,7 +157,7 @@ export class RightPanel {
       this.panelData.set(state.task);
       if (state.task) {
         this.loadDataIntoForm();
-        console.log(state.task)
+        console.log(state.task);
       }
     });
   }

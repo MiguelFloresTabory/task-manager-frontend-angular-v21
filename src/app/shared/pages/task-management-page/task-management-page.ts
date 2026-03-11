@@ -14,10 +14,11 @@ import { ModalAddtask } from "../../components/modal-addtask/modal-addtask";
 import { ModalCreateTaskService } from '../../services/modal-panel.service';
 import { ModalConfirm } from "../../components/modal-confirm/modal-confirm";
 import { Loading } from "../../components/loading/loading";
+import { ToastMsg } from "../../components/toast-msg/toast-msg";
 
 @Component({
   selector: 'app-task-management-page',
-  imports: [NgClass, MenuOptions, RouterOutlet, RightPanel, ModalAddtask, ModalConfirm, Loading],
+  imports: [NgClass, MenuOptions, RouterOutlet, RightPanel, ModalAddtask, ModalConfirm, Loading, ToastMsg],
   templateUrl: './task-management-page.html',
 })
 export class TaskManagementPage {

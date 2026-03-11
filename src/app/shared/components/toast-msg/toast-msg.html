@@ -1,0 +1,14 @@
+<!-- toast.component.html -->
+
+@if(toastService.toast().show){
+<div 
+     class="fixed bottom-5 right-5 px-5 py-3 rounded-lg shadow-lg text-white transition-all duration-300"
+     [class.bg-green-500]="toastService.toast().type === ToastType.Success"
+     [class.bg-red-500]="toastService.toast().type === ToastType.Error"
+     [class.bg-yellow-600]="toastService.toast().type === ToastType.Warning">
+
+  {{ toastService.toast().message }}
+  
+
+</div>
+}

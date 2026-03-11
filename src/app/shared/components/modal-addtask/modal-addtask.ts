@@ -6,6 +6,7 @@ import {
   effect,
   Injector,
   runInInjectionContext,
+  inject,
 } from '@angular/core';
 
 import { ModalCreateTaskService } from '../../services/modal-panel.service';
@@ -25,6 +26,7 @@ import { PriorityEnum } from '../../enums/priority.enum';
 import { TaskService } from '../../services/task.service';
 import { localToUtc } from 'src/app/util/util';
 import { LoadingService } from '../../services/loading.service';
+import { ToastService, ToastType } from '../../services/toast-msg.service';
 
 @Component({
   selector: 'modal-addtask',
@@ -36,8 +38,10 @@ export class ModalAddtask {
     private serviceModal: ModalCreateTaskService,
     private serviceTask: TaskService,
     private injector: Injector,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
   ) {}
+  toastService = inject(ToastService);
+  ToastType = ToastType;
   taskModel = signal<TaskFormData>({
     description: '',
     due: '',
@@ -71,7 +75,6 @@ export class ModalAddtask {
       return null;
     });
   });
-
 
   isFieldInvalid(fieldName: keyof TaskFormData): boolean {
     const fieldSignal = this.taskForm[fieldName];

@@ -1,3 +1,4 @@
+import { ToastService, ToastType } from './../../shared/services/toast-msg.service';
 import { AuthService } from './../services/auth.service';
 import { Injectable } from '@angular/core';
 import {
@@ -16,6 +17,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
     private authService: AuthService,
+    private toastService: ToastService
   ) {}
 
    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -24,6 +26,10 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
         const mensaje = error?.error?.servererror || '';
         const authErrors = [401, 402, 403];
         const currentUrl = this.router.url;
+        if(error.status == 403){
+          this.toastService.show(ToastType.Warning, "No tienes permiso para realizar esta accion");
+          return throwError(() => error);
+        }
 
         if (authErrors.includes(error.status)) {
           switch (mensaje) {
@@ -35,29 +41,29 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
                     setHeaders: { Authorization: `Bearer ${res.access_token}` }
                   });
 
-                  // Forzar recarga de la ruta si estás en /taskmanager
                   if (currentUrl === '/taskmanager') {
                     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                       this.router.navigate([currentUrl]);
                     });
                   }
+                   this.toastService.show(ToastType.Warning, "Session Expired, please login again");
 
                   return next.handle(updatedReq);
                 }),
                 catchError((err) => {
-                  console.log('Error refrescando token:', err);
                   this.router.navigate(['/login']);
                   return throwError(() => err);
                 })
               );
-
             case 'auth_error':
+               this.toastService.show(ToastType.Error, "Authentication Error");
+             return throwError(() => error);
             case 'invalid_token':
               this.router.navigate(['/login']);
               return throwError(() => error);
 
             default:
-              console.log('ERROR DE AUTENTICACIÓN: ', error);
+               this.toastService.show(ToastType.Error, "Internal Error");
               this.router.navigate(['/login']);
               return throwError(() => error);
           }
